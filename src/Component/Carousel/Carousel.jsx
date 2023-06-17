@@ -3,8 +3,8 @@ import React from 'react'
 export default function Carousel() {
     return (
         <div className='carousel'>
-            <div className="carousel__container">
-                <div id="carouselExample" className="carousel slide">
+            <div className="a-container">
+                <div id="carouselExample" className="carousel slide back">
                     <div className="carousel-inner">
                         <div className="carousel-item active">
                             <div style={{ width: '70%' }}>

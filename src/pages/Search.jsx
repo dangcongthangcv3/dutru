@@ -1,21 +1,11 @@
-import React, { useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react'
 import { NavLink, useSearchParams } from 'react-router-dom';
-import { getProductSearchApi } from '../../redux/reducers/productReducer';
 
-export default function Nhap() {
-
+function Search() {
     const keywordRef = useRef('');
-    const { arrproductSearch } = useSelector(state => state.productReducer);
 
-    const dispatch = useDispatch();
-
-
-    const getInProductApi = () => {
-        const action = getProductSearchApi();
-        dispatch(action);
-    }
-
+    const [arrProduct, setArrayProduct] = useState([]);
 
     const [keyword, setKeyword] = useSearchParams();
 
@@ -23,12 +13,20 @@ export default function Nhap() {
         //Lấy ra keyword => khác rổng thì mới gọi api
         const kWord = keyword.get('k');
         if (kWord !== '') {
-            getProductSearchApi(kWord);
+            getProductByKeyword(kWord);
         }
 
 
     }, [keyword.get('k')]) //keyword trên url thay đổi thì useeffect này sẽ chạy
 
+    const getProductByKeyword = async (keyword) => {
+        const result = await axios({
+            url: `https://shop.cyberlearn.vn/api/Product?keyword=${keyword}`,
+            method: 'GET'
+        });
+
+        setArrayProduct(result.data.content);
+    }
     const handleChange = (e) => {
         const { id, value } = e.target;
         keywordRef.current = value;
@@ -50,9 +48,9 @@ export default function Nhap() {
 
                 <button className='btn btn-dark'>Search</button>
             </form>
-            <h3>Kết quả tìm thấy ({arrproductSearch.length})</h3>
+            <h3>Kết quả tìm thấy ({arrProduct.length})</h3>
             <div className='row'>
-                {arrproductSearch.map((item, index) => {
+                {arrProduct.map((item, index) => {
                     return <div className='col-4 mt-2' key={index}>
                         <div className='card'>
                             <img src={item.image} alt="..." />
@@ -71,3 +69,5 @@ export default function Nhap() {
         </div>
     )
 }
+
+export default Search

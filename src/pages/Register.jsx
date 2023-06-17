@@ -11,7 +11,8 @@ const Register = (props) => {
             password: '',
             name: '',
             phone: '',
-            gender: ''
+            gender: '',
+            passwordConfirm: ''
         },
         validationSchema: yup.object().shape({
             email: yup.string().required("Email cannot be blank!").email("Email is invalid!"),
@@ -22,6 +23,7 @@ const Register = (props) => {
         }),
         onSubmit: async (values) => {
             try {
+
                 const res = await http.post('/api/Users/signup', values);
                 alert(res.data?.message);
                 navigate('/login')
@@ -45,12 +47,12 @@ const Register = (props) => {
                             </div>
                             <div className='password p-3'>
                                 <label className='form-label' htmlFor="password">Password</label> <br />
-                                <input name='password' id='password' type='password' className='form-control' onInput={registerFrm.handleChange} onBlur={registerFrm.handleBlur} />
+                                <input name='password' type='password' id='password' className='form-control' onInput={registerFrm.handleChange} onBlur={registerFrm.handleBlur} />
                                 {registerFrm.errors.password && <p className='alert alert-danger'>{registerFrm.errors.password}</p>}
                             </div>
                             <div className='passwordConfirm p-3'>
                                 <label className='form-label' htmlFor="passwordConfirm">Password Confirm</label> <br />
-                                <input name='passwordConfirm' id='passwordConfirm' type='password' className='form-control' onInput={registerFrm.handleChange} onBlur={registerFrm.handleBlur} />
+                                <input name='passwordConfirm' type='password' id='passwordConfirm' className='form-control' onInput={registerFrm.handleChange} onBlur={registerFrm.handleBlur} />
                                 {registerFrm.errors.passwordConfirm && <p className='alert alert-danger'>{registerFrm.errors.passwordConfirm}</p>}
                             </div>
                         </div>
